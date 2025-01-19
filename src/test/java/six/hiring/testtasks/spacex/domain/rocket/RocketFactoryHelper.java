@@ -5,8 +5,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class RocketFactoryHelper {
 
+    public final String DEFAULT_NAME = "Falcon Heavy";
     private final RocketFactory rocketFactory = new RocketFactory();
-    private final String DEFAULT_NAME = "Falcon Heavy";
     private final RocketConfig DEFAULT_CONFIG = RocketConfig.builder()
             .name(DEFAULT_NAME)
             .build();
@@ -23,4 +23,7 @@ public class RocketFactoryHelper {
         return factory.buildRocket(rocketConfig);
     }
 
+    public RocketConfig getDefaultConfig() {
+        return DEFAULT_CONFIG;
+    }
 }
