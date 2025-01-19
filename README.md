@@ -64,6 +64,14 @@ MissionControl recognizes and gives you ability to operate **only with those ins
 To sum up - you can rule Missions and Rockets yourself, but it's more fun to do it via MissionControl.
 
 
+# Reactive version
+
+Reactive version of the library is on demo stage and is represented by MissionControlReactive class 
+from**spacex-rockets-reactive** module.
+To save time, the demo reused domain model from syncronous-approach module. To make it fully reactive, 
+some adjustments must be applied to the model classes.
+
+
 # Unresolved questions
 
 * it is not clear from the requirements, whether mission should start automatically when assigned a rocket. For safety,
