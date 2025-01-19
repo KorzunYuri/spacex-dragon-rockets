@@ -1,0 +1,26 @@
+package six.hiring.testtasks.spacex.domain.rocket;
+
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class RocketFactoryHelper {
+
+    private final RocketFactory rocketFactory = new RocketFactory();
+    private final String DEFAULT_NAME = "Falcon Heavy";
+    private final RocketConfig DEFAULT_CONFIG = RocketConfig.builder()
+            .name(DEFAULT_NAME)
+            .build();
+
+    public Rocket buildDefaultRocket() {
+        return buildRocket(DEFAULT_CONFIG);
+    }
+
+    public Rocket buildRocket(RocketConfig rocketConfig) {
+        return buildRocket(rocketFactory, rocketConfig);
+    }
+
+    public Rocket buildRocket(RocketFactory factory, RocketConfig rocketConfig) {
+        return factory.buildRocket(rocketConfig);
+    }
+
+}
