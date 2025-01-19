@@ -15,6 +15,16 @@ public class MissionFactoryHelper {
         return buildMission(DEFAULT_CONFIG);
     }
 
+    public MissionConfig configWithName(String missionName) {
+        return MissionConfig.builder()
+                .name(missionName)
+            .build();
+    }
+
+    public Mission buildMission(String missionName) {
+        return buildMission(missionFactory, configWithName(missionName));
+    }
+
     public Mission buildMission(MissionConfig missionConfig) {
         return buildMission(missionFactory, missionConfig);
     }
