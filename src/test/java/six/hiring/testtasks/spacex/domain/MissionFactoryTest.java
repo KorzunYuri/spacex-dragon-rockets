@@ -16,6 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class MissionFactoryTest {
 
     private MissionFactory missionFactory;
+    private final String DEFAULT_NAME = "Mars";
+    private final MissionConfig DEFAULT_CONFIG = MissionConfig.builder()
+            .name(DEFAULT_NAME)
+        .build();
 
     @BeforeEach
     public void init() {
@@ -27,17 +31,32 @@ public class MissionFactoryTest {
 
     }
 
+    private Mission createMission(MissionConfig config) {
+        return missionFactory.buildMission(config);
+    }
+
+    private Mission createDefaultMission() {
+        return createMission(DEFAULT_CONFIG);
+    }
+
     @Test
     public void createsMissionWithValidInitialState() {
-        final String missionName = "Mars";
+        Mission mission = createDefaultMission();
 
+        assertNotNull(mission);
+        assertEquals(DEFAULT_NAME, mission.getName());
+        assertEquals(MissionStatus.SCHEDULED, mission.getStatus());
+        assertEquals(Collections.emptySet(), mission.getRockets());
+    }
+
+    @Test
+    public void createsMissionWithCustomConfig() {
+        final String missionName = "Mars";
         MissionConfig missionConfig = MissionConfig.builder().name(missionName).build();
         Mission mission = missionFactory.buildMission(missionConfig);
 
         assertNotNull(mission);
         assertEquals(missionName, mission.getName());
-        assertEquals(MissionStatus.SCHEDULED, mission.getStatus());
-        assertEquals(Collections.emptySet(), mission.getRockets());
     }
 
 }

@@ -13,6 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RocketFactoryTest {
 
     private RocketFactory rocketFactory;
+    private final String DEFAULT_NAME = "Falcon Heavy";
+    private final RocketConfig DEFAULT_CONFIG = RocketConfig.builder()
+            .name(DEFAULT_NAME)
+        .build();
 
     @BeforeEach
     public void init() {
@@ -24,18 +28,33 @@ public class RocketFactoryTest {
 
     }
 
+    private Rocket createRocket(RocketConfig rocketConfig) {
+        return rocketFactory.buildRocket(rocketConfig);
+    }
+
+    private Rocket createDefaultRocket() {
+        return createRocket(DEFAULT_CONFIG);
+    }
+
     @Test
     public void createsRocketWithValidInitialState() {
-        final String rocketName = "Falcon Heavy";
+        Rocket rocket = createDefaultRocket();
 
-        RocketConfig rocketConfig = RocketConfig.builder()
+        assertNotNull(rocket);
+        assertEquals(DEFAULT_NAME, rocket.getName());
+        assertEquals(RocketStatus.ON_GROUND, rocket.getStatus());
+        assertNull(rocket.getMission());
+    }
+
+    @Test
+    public void createsRocketWithCustomConfig() {
+        String rocketName = "Rocket 1";
+        RocketConfig customConfig = RocketConfig.builder()
                 .name(rocketName)
             .build();
-        Rocket rocket = rocketFactory.buildRocket(rocketConfig);
+        Rocket rocket = createRocket(customConfig);
 
         assertNotNull(rocket);
         assertEquals(rocketName, rocket.getName());
-        assertEquals(RocketStatus.ON_GROUND, rocket.getStatus());
-        assertNull(rocket.getMission());
     }
 }
