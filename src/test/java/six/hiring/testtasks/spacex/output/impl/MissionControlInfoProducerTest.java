@@ -62,6 +62,7 @@ public class MissionControlInfoProducerTest {
         missionControl.changeRocketStatus(dragon1, RocketStatus.IN_REPAIR);
         missionControl.assignRocketsToMission(Set.of(dragon1, dragon2), luna1);
         missionControl.assignRocketsToMission(Set.of(redDragon, dragonXL, falconHeavy), transit);
+        missionControl.changeMissionStatus(transit, MissionStatus.IN_PROGRESS);
         missionControl.changeMissionStatus(doubleLanding, MissionStatus.ENDED);
         missionControl.changeMissionStatus(verticalLanding, MissionStatus.ENDED);
 
@@ -79,9 +80,6 @@ public class MissionControlInfoProducerTest {
                         "Luna2 - Scheduled - Dragons: 0",
                         "Double Landing - Ended - Dragons: 0"
         );
-        for (String s : summary) {
-            System.out.println(s);
-        }
         assertEquals(expectedSummary.size(), summary.size());
         for (int i = 0; i < expectedSummary.size(); i++) {
             assertEquals(expectedSummary.get(i), summary.get(i));

@@ -76,7 +76,7 @@ public class Mission {
         } else if (hasRocketsInRepair()) {
             targetStatus = MissionStatus.PENDING;
         } else {
-            targetStatus = MissionStatus.IN_PROGRESS;
+            targetStatus = this.status;
         }
 
         setStatus(targetStatus);

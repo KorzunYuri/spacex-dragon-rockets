@@ -57,7 +57,7 @@ public class MissionControlTest {
         assertEquals(mission, rocket.getMission());
         assertEquals(Set.of(rocket), mission.getRockets());
 
-        assertEquals(MissionStatus.IN_PROGRESS, mission.getStatus());
+        assertEquals(MissionStatus.SCHEDULED, mission.getStatus());
     }
 
     @Test
@@ -129,6 +129,7 @@ public class MissionControlTest {
         assertEquals(MissionStatus.SCHEDULED, mission.getStatus());
 
         missionControl.assignRocketToMission(rocket, mission);
+        missionControl.changeMissionStatus(mission, MissionStatus.IN_PROGRESS);
         assertEquals(MissionStatus.IN_PROGRESS, mission.getStatus());
         assertEquals(RocketStatus.IN_SPACE, rocket.getStatus());
     }
@@ -143,6 +144,7 @@ public class MissionControlTest {
         Set<Rocket> rockets = Set.of(rocket1, rocket2);
 
         missionControl.assignRocketsToMission(rockets, mission);
+        missionControl.changeMissionStatus(mission, MissionStatus.IN_PROGRESS);
         assertEquals(MissionStatus.IN_PROGRESS, mission.getStatus());
         rockets.forEach(r -> assertEquals(RocketStatus.IN_SPACE, r.getStatus()));
     }
@@ -154,6 +156,7 @@ public class MissionControlTest {
         assertEquals(MissionStatus.SCHEDULED, mission.getStatus());
 
         missionControl.assignRocketToMission(rocket, mission);
+        missionControl.changeMissionStatus(mission, MissionStatus.IN_PROGRESS);
         assertEquals(MissionStatus.IN_PROGRESS, mission.getStatus());
 
         Exception e = assertThrows(IllegalStateException.class, () -> missionControl.changeRocketStatus(rocket, RocketStatus.IN_REPAIR));
@@ -180,6 +183,7 @@ public class MissionControlTest {
 
         Set<Rocket> rockets = Set.of(rocket1, rocket2);
         missionControl.assignRocketsToMission(rockets, mission);
+        missionControl.changeMissionStatus(mission, MissionStatus.IN_PROGRESS);
         assertEquals(MissionStatus.IN_PROGRESS, mission.getStatus());
 
         missionControl.changeMissionStatus(mission, MissionStatus.ENDED);
@@ -224,6 +228,9 @@ public class MissionControlTest {
 
         //  repair the rocket, which should trigger the mission launch
         missionControl.changeRocketStatus(rocket1, RocketStatus.ON_GROUND);
+        assertEquals(MissionStatus.PENDING, mission.getStatus());
+
+        missionControl.changeMissionStatus(mission, MissionStatus.IN_PROGRESS);
         assertEquals(MissionStatus.IN_PROGRESS, mission.getStatus());
         mission.getRockets().forEach(r -> assertEquals(RocketStatus.IN_SPACE, r.getStatus()));
 
