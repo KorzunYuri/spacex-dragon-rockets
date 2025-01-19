@@ -5,8 +5,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class MissionFactoryHelper {
 
+    public final String DEFAULT_NAME = "Mars";
     private final MissionFactory missionFactory = new MissionFactory();
-    private final String DEFAULT_NAME = "Mars";
     private final MissionConfig DEFAULT_CONFIG = MissionConfig.builder()
             .name(DEFAULT_NAME)
             .build();
@@ -23,4 +23,7 @@ public class MissionFactoryHelper {
         return factory.buildMission(missionConfig);
     }
 
+    public MissionConfig getDefaultConfig() {
+        return DEFAULT_CONFIG;
+    }
 }
