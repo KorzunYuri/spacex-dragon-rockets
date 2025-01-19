@@ -15,6 +15,16 @@ public class RocketFactoryHelper {
         return buildRocket(DEFAULT_CONFIG);
     }
 
+    public RocketConfig configWithName(String rocketName) {
+        return RocketConfig.builder()
+                .name(rocketName)
+            .build();
+    }
+
+    public Rocket buildRocket(String rocketName) {
+        return buildRocket(rocketFactory, configWithName(rocketName));
+    }
+
     public Rocket buildRocket(RocketConfig rocketConfig) {
         return buildRocket(rocketFactory, rocketConfig);
     }

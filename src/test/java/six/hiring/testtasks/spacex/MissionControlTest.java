@@ -2,6 +2,7 @@ package six.hiring.testtasks.spacex;
 
 import org.junit.jupiter.api.*;
 import six.hiring.testtasks.spacex.domain.mission.Mission;
+import six.hiring.testtasks.spacex.domain.mission.MissionConfig;
 import six.hiring.testtasks.spacex.domain.mission.MissionFactoryHelper;
 import six.hiring.testtasks.spacex.domain.mission.MissionStatus;
 import six.hiring.testtasks.spacex.domain.rocket.Rocket;
