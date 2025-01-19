@@ -73,7 +73,7 @@ public class Mission {
         MissionStatus targetStatus;
         if (rockets.isEmpty()) {
             targetStatus = MissionStatus.SCHEDULED;
-        } else if (rockets.stream().anyMatch(rocket -> rocket.getStatus().equals(RocketStatus.IN_REPAIR))) {
+        } else if (hasRocketsInRepair()) {
             targetStatus = MissionStatus.PENDING;
         } else {
             targetStatus = MissionStatus.IN_PROGRESS;
@@ -87,8 +87,15 @@ public class Mission {
      * @throws IllegalArgumentException if transition is impossible (e.g. we want to repair a rocket when in space)
      */
     private void validateNewStatus(MissionStatus targetStatus) throws IllegalStateException {
-        if (status == MissionStatus.IN_PROGRESS && targetStatus == MissionStatus.PENDING) {
-            throw new IllegalStateException("Mission failed: one or more rockets are broken while in space");
+        if (targetStatus == MissionStatus.PENDING && status == MissionStatus.IN_PROGRESS) {
+            throw new IllegalStateException("Cannot return to pending status while in space");
         }
+        if (targetStatus == MissionStatus.IN_PROGRESS && hasRocketsInRepair()) {
+            throw new IllegalStateException("Cannot start mission when at least one rocket is in repair");
+        }
+    }
+
+    private boolean hasRocketsInRepair() {
+        return rockets.stream().anyMatch(rocket -> rocket.getStatus().equals(RocketStatus.IN_REPAIR));
     }
 }

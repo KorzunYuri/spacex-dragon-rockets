@@ -148,7 +148,7 @@ public class MissionControlTest {
     }
 
     @Test
-    public void disallowesRepairingRocketWhenInSpace() {
+    public void disallowsRepairingRocketWhenInSpace() {
         Mission mission = missionControl.createMission(MissionFactoryHelper.getDefaultConfig());
         Rocket rocket = missionControl.createRocket(RocketFactoryHelper.getDefaultConfig());
         assertEquals(MissionStatus.SCHEDULED, mission.getStatus());
@@ -157,7 +157,18 @@ public class MissionControlTest {
         assertEquals(MissionStatus.IN_PROGRESS, mission.getStatus());
 
         Exception e = assertThrows(IllegalStateException.class, () -> missionControl.changeRocketStatus(rocket, RocketStatus.IN_REPAIR));
-        assertEquals("Mission failed: one or more rockets are broken while in space", e.getMessage());
+        assertEquals("Cannot return to pending status while in space", e.getMessage());
+    }
+
+    @Test
+    public void disallowsStartingMissionWhenRocketIsInRepair() {
+        Mission mission = missionControl.createMission(MissionFactoryHelper.getDefaultConfig());
+        Rocket rocket = missionControl.createRocket(RocketFactoryHelper.getDefaultConfig());
+        missionControl.changeRocketStatus(rocket, RocketStatus.IN_REPAIR);
+
+        missionControl.assignRocketToMission(rocket, mission);
+        Exception e = assertThrows(IllegalStateException.class, () -> missionControl.changeMissionStatus(mission, MissionStatus.IN_PROGRESS));
+        assertEquals("Cannot start mission when at least one rocket is in repair", e.getMessage());
     }
 
     @Test
@@ -180,7 +191,7 @@ public class MissionControlTest {
     }
 
     @Test
-    public void declinesChangingRocketStatusToInSpace() {
+    public void disallowsChangingRocketStatusToInSpace() {
         Mission mission = missionControl.createMission(MissionFactoryHelper.getDefaultConfig());
         Rocket rocket = missionControl.createRocket(RocketFactoryHelper.getDefaultConfig());
         missionControl.changeRocketStatus(rocket, RocketStatus.IN_REPAIR);
